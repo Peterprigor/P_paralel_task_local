@@ -1,0 +1,126 @@
+openapi: 3.0.3
+info:
+  title: LKSH Enter API
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+paths:
+  /stats:
+    get:
+      summary: Получить статистику команды
+      parameters:
+        - in: query
+          name: team_name
+          schema:
+            type: string
+          required: true
+          description: Имя команды
+        - in: query
+          name: format
+          schema:
+            type: string
+            enum: [json]
+          required: false
+          description: Формат вывода (json или html)
+      responses:
+        '200':
+          description: Статистика команды
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                example: [3, 1, 5]
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Ошибка: отсутствует параметр team_name
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /versus:
+    get:
+      summary: Количество игр двух игроков друг против друга
+      parameters:
+        - in: query
+          name: player1_id
+          schema:
+            type: integer
+          required: true
+          description: ID первого игрока
+        - in: query
+          name: player2_id
+          schema:
+            type: integer
+          required: true
+          description: ID второго игрока
+        - in: query
+          name: format
+          schema:
+            type: string
+            enum: [json]
+          required: false
+          description: Формат вывода (json или html)
+      responses:
+        '200':
+          description: Количество игр
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 5
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Ошибка: отсутствуют параметры или неправильный формат
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /goals:
+    get:
+      summary: Получить список голов игрока
+      parameters:
+        - in: query
+          name: player_id
+          schema:
+            type: integer
+          required: true
+          description: ID игрока
+        - in: query
+          name: format
+          schema:
+            type: string
+            enum: [json]
+          required: false
+          description: Формат вывода (json или html)
+      responses:
+        '200':
+          description: Список голов игрока
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    match:
+                      type: integer
+                      description: ID матча
+                    time:
+                      type: integer
+                      description: Минута гола
+                example:
+                  - match: 10
+                    time: 23
+                  - match: 11
+                    time: 45
+            text/html:
+              schema:
+                type: string
+        '400':
+          description: Ошибка: отсутствует параметр player_id
+        '500':
+          description: Внутренняя ошибка сервера
