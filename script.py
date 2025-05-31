@@ -115,7 +115,7 @@ def preparing():
                 player["team_id"] = [team["id"]]
             if player not in players:
                 players.append(player)
-    print("Done")
+    return
 
 def sorted_players():
     global players
