@@ -149,6 +149,9 @@ def versus(player1_id, player2_id):
 
     player1 = get_player_by_id2(player1_id)
     player2 = get_player_by_id2(player2_id)
+    if player1 is None or player2 is None:
+        print("0")
+        return
     player1_teams = player1["team"]
     player2_teams = player2["team"]
 
@@ -161,12 +164,13 @@ def versus(player1_id, player2_id):
     player2_wins = 0
     for player1_team in player1_teams:
         for game in tournament[player1_team]:
-            if game[0] in player2_teams:
-                total_matches += 1
-                if game[1] > game[2]:
-                    player1_wins += 1
-                if game[1] < game[2]:
-                    player2_wins += 1
+            for player2_team in player2_teams:
+                if player2_team == game[0]:
+                    total_matches += 1
+                    if game[1] > game[2]:
+                        player1_wins += 1
+                    if game[1] < game[2]:
+                        player2_wins += 1
 
     #if total_matches == 0:
     #    print("0 0 0")
